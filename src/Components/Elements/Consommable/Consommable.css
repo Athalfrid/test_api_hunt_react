@@ -1,0 +1,86 @@
+/*ConsommableCard.js*/
+.card h3 {
+  margin-top: 0;
+}
+
+.card p {
+  margin: 0;
+  color: #555;
+}
+
+.textAdd {
+  cursor: pointer;
+  font-size: 4em;
+}
+
+.card-body {
+  align-items: center;
+}
+
+.card-img-left {
+  width: 200px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-content {
+  flex-grow: 1;
+  padding-left: 15px;
+}
+
+.card-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px; /* Adjust as needed */
+}
+
+.divImg{
+    height: auto;
+    width: 150px;
+}
+
+
+/*Autre ?*/
+.button {
+  width: 40px;
+}
+
+/*Consommable.js*/
+.encard {
+  border: 1px lightgray dotted;
+  margin: 1em;
+  padding-left: 2em;
+}
+
+span {
+  font-size: 20px;
+  margin-left: 5px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.grid-item {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  padding: 20px;
+}
+
+.grid-item img {
+  max-width: 100%;
+  height: auto;
+}
+
+.grid-item h5 {
+  margin-top: 0;
+}
