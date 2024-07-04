@@ -1,49 +1,71 @@
 /*ConsommableCard.js*/
-.card h3 {
-  margin-top: 0;
-}
 
-.card p {
-  margin: 0;
-  color: #555;
-}
-
-.textAdd {
-  cursor: pointer;
-  font-size: 4em;
-}
-
-.card-body {
+#divCardFull{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  padding-bottom: 20px;
   align-items: center;
+  justify-content: center;
+}
+#divGauche{
+  display: flex;
+  width: 25%;
+  align-items: center;
+  justify-content: center;
+}
+#divType{
+  font-size: 14px;
+}
+#divType p{
+  margin-right: 4px;
 }
 
-.card-img-left {
-  width: 200px;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-content {
-  flex-grow: 1;
-  padding-left: 15px;
-}
-
-.card-buttons {
+#divDroite{
+  width: 70%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: center;
 }
+#divDescEffBtn{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#divDescEff{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#divBtn{
+  display: flex;
+  flex-direction: column;
+  width: 50px;
+  margin-right: 2px;
+}
+#divBtn button{
+  margin: 3px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.card-img-left{
+  padding: 2px;
+}
+
 
 .text-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 200px; /* Adjust as needed */
+  max-width: 350px; /* Adjust as needed */
 }
 
 .divImg{
-    height: auto;
-    width: 150px;
+  height: '100%';
+}
+.divImg img{
+  width: 100px;
 }
 
 
@@ -53,6 +75,16 @@
 }
 
 /*Consommable.js*/
+
+#divAdd{
+  width: 50%;
+  border: 1px lightgray dotted;
+  border-radius: 5%;
+}
+.textAdd {
+  cursor: pointer;
+  font-size: 4em;
+}
 .encard {
   border: 1px lightgray dotted;
   margin: 1em;
@@ -72,15 +104,10 @@ span {
 
 .grid-item {
   background-color: #ffffff;
-  border: 1px solid #ddd;
-  padding: 20px;
+  padding: 10px;
 }
 
 .grid-item img {
   max-width: 100%;
   height: auto;
-}
-
-.grid-item h5 {
-  margin-top: 0;
 }

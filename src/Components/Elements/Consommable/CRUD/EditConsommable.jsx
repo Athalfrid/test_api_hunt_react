@@ -1,20 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-const EditConsommable = () => {
+const EditConsommable = ({ userLogged }) => {
   const { id } = useParams();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [type, setType] = useState('');
-  const [effects, setEffects] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [type, setType] = useState("");
+  const [effects, setEffects] = useState("");
+  const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
+    if (!userLogged.token.length === 0 || userLogged.role !== "admin") {
+      navigate("/login");
+    }
     const fetchConsommable = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/v1/consumable/${id}`);
+        const response = await fetch(
+          `${API_URL}/api/v1/consumable/${id}`
+        );
 
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
 
         const data = await response.json();
@@ -23,63 +30,111 @@ const EditConsommable = () => {
         setType(data.type);
         setEffects(data.effects);
       } catch (error) {
-        console.error('Error fetching consommable:', error);
+        console.error("Error fetching consommable:", error);
       }
     };
 
     fetchConsommable();
-  }, [id]);
+  }, [id, navigate, userLogged,API_URL]);
 
   const handleSubmit = async (e) => {
+    const token = userLogged.token;
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/consumable/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, description }),
-      });
-
+      const response = await fetch(
+        `${API_URL}/api/v1/consumable/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ name, description, type, effects }),
+        }
+      );
+      navigate("/admin/consommable/list");
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const data = await response.json();
-      console.log('Consommable updated:', data);
+      console.log("Consommable updated:", data);
     } catch (error) {
-      console.error('Error updating consommable:', error);
+      console.error("Error updating consommable:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input 
-        type="text" 
-        value={name} 
-        onChange={(e) => setName(e.target.value)} 
-        placeholder="Nom" 
-      />
-      <input 
-        type="text" 
-        value={type} 
-        onChange={(e) => setType(e.target.value)} 
-        placeholder="Type" 
-      />
-      <input 
-        type="text" 
-        value={description} 
-        onChange={(e) => setDescription(e.target.value)} 
-        placeholder="Description" 
-      />
-      <input 
-        type="text" 
-        value={effects} 
-        onChange={(e) => setEffects(e.target.value)} 
-        placeholder="Effets" 
-      />
-      <button type="submit">Update</button>
-    </form>
+    <div className="container mt-5">
+      <h2 className="mb-4">Update Item</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Nom
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Nom"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="type" className="form-label">
+            Type
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="type"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            placeholder="Type"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="description" className="form-label">
+            Description
+          </label>
+          <textarea
+            className="form-control"
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description"
+            rows="3"
+          ></textarea>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="effects" className="form-label">
+            Effets
+          </label>
+          <textarea
+            className="form-control"
+            id="effects"
+            value={effects}
+            onChange={(e) => setEffects(e.target.value)}
+            placeholder="Effets"
+            rows="3"
+          ></textarea>
+        </div>
+        <div className="d-flex column justify-content-center">
+          <button type="submit" className="btn btn-primary mt-2">
+            Modifier
+          </button>
+        </div>
+      </form>
+      <div className="d-flex justify-content-center mt-2">
+        <button
+          className="btn btn-info"
+          onClick={() => navigate("/admin/consommable/list")}
+        >
+          Retour
+        </button>
+      </div>
+    </div>
   );
 };
 

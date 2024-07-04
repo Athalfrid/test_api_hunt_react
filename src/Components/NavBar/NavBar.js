@@ -1,20 +1,34 @@
-import React from 'react';
-import './NavBar.css';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import "./NavBar.css";
+import { NavLink } from "react-router-dom";
 
-function NavBar(){
-    return (
-        <div className="navbar">
-            <NavLink exact to="/chasseur" activeclassname="active">Chasseurs</NavLink>
-            <NavLink exact to="/traits" activeclassname="active">Traits</NavLink>
-            <NavLink exact to="/armes" activeclassname="active">Armes</NavLink>
-            <NavLink exact to="/munitions-speciales" activeclassname="active">Munitions spéciales</NavLink>
-            <NavLink exact to="/outils" activeclassname="active">Outils</NavLink>
-            <NavLink exact to="/consommable" activeclassname="active">Consommables</NavLink>
-            <NavLink exact to="/enemie" activeclassname="active">Enemies</NavLink>
-            <NavLink exact to="/loot" activeclassname="active">Loots</NavLink>
-        </div>
-    )
+function NavBar({ userLogged }) {
+  return (
+    <div className="navbar">
+      <NavLink to="/" activeclassname="selected">
+        Home
+      </NavLink>
+      <NavLink to="/chasseur" activeclassname="selected">
+        Chasseurs
+      </NavLink>
+      <NavLink to="/traits" activeclassname="selected">
+        Traits
+      </NavLink>
+      <NavLink to="/armes" activeclassname="selected">
+        Armes
+      </NavLink>
+      <NavLink to="/outils" activeclassname="selected">
+        Outils
+      </NavLink>
+      <NavLink to="/consommable" activeclassname="selected">
+        Consommables
+      </NavLink>
+      <NavLink to="/enemie" activeclassname="selected">
+        Enemies
+      </NavLink>
+      {userLogged.isLogged && <NavLink>Forum</NavLink>}
+    </div>
+  );
 }
 
 export default NavBar;

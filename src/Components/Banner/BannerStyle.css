@@ -1,0 +1,53 @@
+.banner {
+    position: relative;
+    background-color: #f0f0f0;
+    text-align: center;
+  }
+  
+  .banner-image {
+    height: 150px; /* Ajustez la taille de votre image */
+    background-image: url('../../img/final_ban_hunt_showdown.png');
+    background-size: cover; /* Couvre entièrement l'élément */
+    background-position: top; /* Centre l'image horizontalement et verticalement */
+    display: flex;
+  }
+  
+  @media (max-width: 768px) {
+    .banner-image {
+      height: 250px; /* Ajustement de la taille pour les petits écrans */
+    }
+  }
+  
+  .banner-buttons {
+    margin-top: 20px;
+  }
+  
+  .banner-buttons a {
+    margin-right: 10px;
+  }
+  
+  .banner-buttons button {
+    margin-top: 10px;
+  }
+  .title h1{
+    font-size: 86px;
+    color: black !important;
+    font-family: '';
+  }
+
+  .title{
+    width: 85%;
+    display: flex;
+  }
+
+  .btnLog{
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .btnLog *{
+    margin: 5px;
+    padding: 5px;
+  }

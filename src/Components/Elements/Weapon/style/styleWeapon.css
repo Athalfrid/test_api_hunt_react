@@ -1,0 +1,82 @@
+.weapon-details {
+    margin-top: 20px;
+  }
+  
+  .weapon-info {
+    margin-top: 10px;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .weapon-list {
+    max-height: 500px;
+    overflow-y: auto;
+    margin-top: 20px;
+  }
+  
+  .weapon-filters {
+    margin-top: 20px;
+  }
+  
+  .imgWeapon {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  .weapon-card {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .weapon-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .weapon-details {
+    font-size: 16px;
+  }
+  
+  .weapon-details p {
+    margin: 5px 0;
+  }
+  
+  .detail-label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    width: 75%;  /* Changer pour modifier la largeur des colonnes*/
+  }
+  
+  .table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+  }
+  
+  .table tbody + tbody {
+    border-top: 2px solid #dee2e6;
+  }
+  
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  

@@ -1,31 +1,39 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const CreateConsommable = () => {
-  const API_URL = process.env.REACT_APP_API_BASE_URL;
+const CreateTrait = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
-  const [type, setType] = useState("");
   const [description, setDescription] = useState("");
-  const [effects, setEffects] = useState("");
-  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [cost, setCost] = useState("");
+  const [lvlUnlocked, setLevelUnlocked] = useState("");
+  const listCategory = [
+    { id: 1, libelle: "Offensif" },
+    { id: 2, libelle: "Défensif" },
+    { id: 3, libelle: "Mouvement" },
+    { id: 4, libelle: "Support" },
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}/api/v1/consumable`, {
+      const response = await fetch("http://localhost:3000/api/v1/trait", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, type, description, effects, price }),
+        body: JSON.stringify({ name, category, description, cost,lvlUnlocked }),
       });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      navigate("/admin/consommable/list");
+
+      const data = await response.json();
+      console.log("Consommable created:", data);
+      navigate("/traits");
     } catch (error) {
       console.error("Error creating consommable:", error);
     }
@@ -42,23 +50,30 @@ const CreateConsommable = () => {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Nom du consommable"
+            placeholder="Nom du trait"
             required
             m-2
             p-2
           />
         </div>
         <div className="form-group m-2">
-          <label htmlFor="type">Type</label>
-          <input
-            type="text"
+          <label htmlFor="type">Catégorie</label>
+          <select
             className="form-control m-2 p-2"
-            id="type"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            placeholder="Type de consommable"
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             required
-          />
+          >
+            <option value="" disabled>
+              Sélectionnez une catégorie
+            </option>
+            {listCategory.map((cat) => (
+              <option key={cat.id} value={cat.libelle}>
+                {cat.libelle}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-group m-2">
           <label htmlFor="description">Description</label>
@@ -73,39 +88,43 @@ const CreateConsommable = () => {
           />
         </div>
         <div className="form-group m-2">
-          <label htmlFor="effects">Effets</label>
+          <label htmlFor="effects">Coût</label>
           <input
-            type="text"
+            type="number"
+            min={0}
+            max={10}
             className="form-control m-2 p-2"
             id="effects"
-            value={effects}
-            onChange={(e) => setEffects(e.target.value)}
-            placeholder="Effets"
+            value={cost}
+            onChange={(e) => setCost(e.target.value)}
+            placeholder="Coût"
             required
           />
         </div>
         <div className="form-group m-2">
-          <label htmlFor="effects">Prix</label>
+          <label htmlFor="effects">Rang d'obtention</label>
           <input
-            type="text"
+            type="number"
+            min={1}
+            max={100}
             className="form-control m-2 p-2"
             id="effects"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="Prix"
+            value={lvlUnlocked}
+            onChange={(e) => setLevelUnlocked(e.target.value)}
+            placeholder="Rang d'obtention"
             required
           />
         </div>
         <div className="d-flex column justify-content-center">
           <button type="submit" className="btn btn-primary mt-2">
-            Ajouter le consommable
+            Ajouter le trait
           </button>
         </div>
       </form>
       <div className="d-flex justify-content-center mt-2">
         <button
           className="btn btn-info"
-          onClick={() => navigate("/admin/consommable/list")}
+          onClick={() => navigate("/traits")}
         >
           Retour
         </button>
@@ -114,4 +133,4 @@ const CreateConsommable = () => {
   );
 };
 
-export default CreateConsommable;
+export default CreateTrait;

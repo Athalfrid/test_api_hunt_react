@@ -1,59 +1,104 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-const ConsommableDetails = () => {
-
-    const navigate = useNavigate();
-  const { id } = useParams();
-  const [consommable, setConsommable] = useState(null);
+const ConsommableDetails = ({ userLogged }) => {
+  const [consommables, setConsommables] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
-    const fetchConsommable = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/v1/consumable/${id}`,
-            {
-                method: 'GET',
-            }
-        );
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        setConsommable(data);
-      } catch (error) {
-        console.error('Error fetching consommable:', error);
-      }
-    };
-
     fetchConsommable();
-  }, [id]);
+  }, []);
+  const fetchConsommable = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/consumable");
+      if (!response.ok) {
+        throw new Error(
+          "Erreur lors de la récupération de la liste des consommables !"
+        );
+      }
+      const jsonData = await response.json();
+      setConsommables(jsonData);
+      setLoading(false);
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+  const handleEdit = (consommable) => {
+    // Fonction pour gérer l'édition d'un consommable
+    console.log("Edit consommable with id:", consommable._id);
+    navigate(`/admin/consommable/edit/${consommable._id}`);
+  };
 
-  if (!consommable) {
-    return <div>Chargement du détails de l'item n°{id}...</div>;
+  const handleDelete = async (consommable) => {
+    console.log(`trying to delete ${consommable._id}`);
+    try {
+      const response = await fetch(
+        `${API_URL}/api/v1/consumable/${consommable._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      console.log("Consommable deleted");
+      fetchConsommable();
+    } catch (error) {
+      console.error("Error deleting consommable:", error);
+    }
+    setConsommables((prevConsommables) =>
+      prevConsommables.filter((item) => item._id !== consommable._id)
+    );
+  };
+
+  if (loading) {
+    return <div>Chargement du détails des items</div>;
+  }
+
+  if (error) {
+    return (
+      <div>
+        Erreur lors de la récupération des éléments : <br />
+        {error}
+      </div>
+    );
   }
 
   return (
-    <div className="container mt-4">
-      <div className="card">
-        <div className="card-body">
-          <h1 className="card-title">{consommable.name}</h1>
-          <div className="row">
-            <div className="col-md-6">
-              <img src={consommable.image} alt={consommable.name} className="img-fluid mb-3" />
-            </div>
-            <div className="col-md-6">
-              <p className="card-text">{consommable.description}</p>
-              <p><strong>Effects:</strong> {consommable.effects}</p>
-              <p><strong>Type:</strong> {consommable.type}</p>
-            </div>
-          </div>
-        </div>
+    <div className="container">
+      <table className="table table-striped table-bordered">
+        <tbody>
+          {consommables.map((consommable) => (
+            <tr key={consommable._id}>
+              <td>{consommable.name}</td>
+              <td>{consommable.type.charAt(0).toUpperCase() + consommable.type.slice(1)}</td>
+              <td>
+                <button className="btn btn-warning" onClick={() => handleEdit(consommable)}>
+                  Modifier
+                </button>
+              </td>
+              <td>
+                <button className="btn btn-danger" onClick={() => handleDelete(consommable)}>
+                  Supprimer
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="d-flex justify-content-center mt-2">
+        <button className="btn btn-info">
+          <Link className="nav-link" to="/admin/consommable/create">
+            Ajouter Consommable
+          </Link>
+        </button>
       </div>
-      <button className="btn btn-primary mt-3" onClick={() => navigate('/consommable')}>
-        Retour
-      </button>
     </div>
   );
 };

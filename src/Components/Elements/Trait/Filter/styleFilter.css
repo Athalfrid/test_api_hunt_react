@@ -1,0 +1,32 @@
+.form-group {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 5px; /* Ensure there's some space below each form group */
+    margin-right: 30px;
+    margin-left: 30px;
+  }
+  
+  button {
+    min-width: 100px; /* Ensure buttons have a minimum width */
+  }
+  
+  @media (max-width: 768px) {
+    .d-flex.flex-wrap .form-group,
+    .d-flex.flex-wrap .btn {
+      flex: 1 0 100%; /* Ensure elements stack on smaller screens */
+      max-width: 100%; /* Ensure elements stack on smaller screens */
+      margin-bottom: 10px; /* Add spacing between stacked elements */
+    }
+  }
+  .filter-container {
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+  }
+  
+  .filter-container.collapsed {
+    max-height: 0;
+  }
+*{
+    font-size: 14px;
+    font-weight: bold;
+  }
