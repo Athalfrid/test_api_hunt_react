@@ -76,15 +76,24 @@ const ConsommableDetails = ({ userLogged }) => {
         <tbody>
           {consommables.map((consommable) => (
             <tr key={consommable._id}>
-              <td>{consommable.name}</td>
-              <td>{consommable.type.charAt(0).toUpperCase() + consommable.type.slice(1)}</td>
+              <td>{consommable.name.toUpperCase()}</td>
               <td>
-                <button className="btn btn-warning" onClick={() => handleEdit(consommable)}>
+                {consommable.type.charAt(0).toUpperCase() +
+                  consommable.type.slice(1)}
+              </td>
+              <td>
+                <button
+                  className="btn btn-warning"
+                  onClick={() => handleEdit(consommable)}
+                >
                   Modifier
                 </button>
               </td>
               <td>
-                <button className="btn btn-danger" onClick={() => handleDelete(consommable)}>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDelete(consommable)}
+                >
                   Supprimer
                 </button>
               </td>

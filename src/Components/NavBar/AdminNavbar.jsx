@@ -5,7 +5,7 @@ const AdminNavbar = ({ handleLogout }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="w-100 d-flex align-items-center">
-          <div>
+          <div className="px-5">
             <h3 className="navbar-brand">WIKIHUNT - Administration</h3>
           </div>
           <div className="collapse navbar-collapse" id="navbarNav">
@@ -15,20 +15,10 @@ const AdminNavbar = ({ handleLogout }) => {
                   Liste des Consommables
                 </Link>
               </li>
-              <li style={{ border: "1px solid lightgrey" }}>
-                <Link className="nav-link" to="/admin/consommable/create">
-                  Ajouter Consommable
-                </Link>
-              </li>
               <span></span>
               <li style={{ border: "1px solid lightgrey" }}>
                 <Link className="nav-link" to="/admin/traits/list">
                   Liste des traits
-                </Link>
-              </li>
-              <li style={{ border: "1px solid lightgrey" }}>
-                <Link className="nav-link" to="/admin/traits/create">
-                  Ajouter trait
                 </Link>
               </li>
               <span></span>
@@ -37,9 +27,22 @@ const AdminNavbar = ({ handleLogout }) => {
                   Liste des armes
                 </Link>
               </li>
+              <span></span>
               <li style={{ border: "1px solid lightgrey" }}>
-                <Link className="nav-link" to="/admin/armes/create">
-                  Ajouter Armes
+                <Link className="nav-link" to="/admin/outils/list">
+                  Liste des outils
+                </Link>
+              </li>
+              <span></span>
+              <li style={{ border: "1px solid lightgrey" }}>
+                <Link className="nav-link" to="/admin/chasseur/list">
+                  Liste des chasseurs
+                </Link>
+              </li>
+              <span></span>
+              <li style={{ border: "1px solid lightgrey" }}>
+                <Link className="nav-link" to="/admin/ennemie/list">
+                  Liste des ennemies
                 </Link>
               </li>
             </ul>
