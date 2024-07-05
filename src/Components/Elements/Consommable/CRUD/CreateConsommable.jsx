@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const CreateConsommable = () => {
+const CreateConsommable = ({requiredRole}) => {
   const API_URL = process.env.REACT_APP_API_BASE_URL;
   const navigate = useNavigate();
 
@@ -9,7 +10,17 @@ const CreateConsommable = () => {
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
   const [effects, setEffects] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState("");  
+  const userLogged = localStorage.getItem('userLogged') ?  JSON.parse(localStorage.getItem('userLogged')) : null;
+
+  useEffect(() => {
+    if (!userLogged.isLogged) {
+      navigate("/403");
+    }
+    if (requiredRole && userLogged.role !== requiredRole) {
+      navigate("/402");
+    }
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,19 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const ConsommableDetails = ({ userLogged }) => {
+const ConsommableDetails = ({ requiredRole }) => {
   const [consommables, setConsommables] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_BASE_URL;
+  const userLogged = localStorage.getItem('userLogged') ?  JSON.parse(localStorage.getItem('userLogged')) : null;
+
+  useEffect(() => {
+    if (!userLogged.isLogged) {
+      navigate("/403");
+    }
+    if (requiredRole && userLogged.role !== requiredRole) {
+      navigate("/402");
+    }
+  });
 
   useEffect(() => {
     fetchConsommable();
-  }, []);
+  });
   const fetchConsommable = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/consumable");
+      const response = await fetch(`${API_URL}/api/v1/consumable`);
       if (!response.ok) {
         throw new Error(
           "Erreur lors de la récupération de la liste des consommables !"

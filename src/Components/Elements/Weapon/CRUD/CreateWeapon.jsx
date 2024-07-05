@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const CreateWeapon = ({ userLogged, requiredRole }) => {
+const CreateWeapon = ({ requiredRole }) => {
   const navigate = useNavigate();
+  const userLogged = localStorage.getItem('userLogged') ?  JSON.parse(localStorage.getItem('userLogged')) : null;
 
   useEffect(() => {
-    console.log(userLogged);
     if (!userLogged.isLogged) {
       navigate("/403");
     }
@@ -54,7 +54,7 @@ const CreateWeapon = ({ userLogged, requiredRole }) => {
       });
       const data = await response.json();
       console.log("Weapon added:", data);
-      navigate("/armes");
+      navigate("/admin/armes/list");
     } catch (error) {
       console.error("Error adding weapon:", error);
     }

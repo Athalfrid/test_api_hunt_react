@@ -3,6 +3,9 @@ import "./NavBar.css";
 import { NavLink } from "react-router-dom";
 
 function NavBar({ userLogged }) {
+  const storedUser = localStorage.getItem("userLogged")
+  ? JSON.parse(localStorage.getItem("userLogged"))
+  : null;
   return (
     <div className="navbar">
       <NavLink to="/" activeclassname="selected">
@@ -26,7 +29,7 @@ function NavBar({ userLogged }) {
       <NavLink to="/enemie" activeclassname="selected">
         Enemies
       </NavLink>
-      {userLogged.isLogged && <NavLink>Forum</NavLink>}
+      {storedUser && storedUser.isLogged && <NavLink>Forum<br/>(bientôt !)</NavLink>}
     </div>
   );
 }

@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const AdminNavbar = ({ handleLogout }) => {
+const AdminNavbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="w-100 d-flex align-items-center">
           <div className="px-5">
             <h3 className="navbar-brand">WIKIHUNT - Administration</h3>
           </div>
-          <div className="collapse navbar-collapse" id="navbarNav">
+          <div className="navbar" id="navbarNav">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li style={{ border: "1px solid lightgrey" }}>
                 <Link className="nav-link" to="/admin/consommable/list">

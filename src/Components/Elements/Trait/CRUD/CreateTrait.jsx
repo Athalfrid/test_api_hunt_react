@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const CreateTrait = () => {
+const CreateTrait = ({requiredRole}) => {
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -9,6 +9,16 @@ const CreateTrait = () => {
   const [category, setCategory] = useState("");
   const [cost, setCost] = useState("");
   const [lvlUnlocked, setLevelUnlocked] = useState("");
+  const userLogged = localStorage.getItem('userLogged') ?  JSON.parse(localStorage.getItem('userLogged')) : null;
+
+  useEffect(() => {
+    if (!userLogged.isLogged) {
+      navigate("/403");
+    }
+    if (requiredRole && userLogged.role !== requiredRole) {
+      navigate("/402");
+    }
+  });
   const listCategory = [
     { id: 1, libelle: "Offensif" },
     { id: 2, libelle: "Défensif" },

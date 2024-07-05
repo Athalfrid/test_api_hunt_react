@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setUserLogged }) => {
+const Login = ({ setUserLogged,userLogged }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Charger l'utilisateur connecté depuis le localStorage
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    const storedUser = JSON.parse(localStorage.getItem("userLogged"));
+    if (storedUser && storedUser.token && storedUser.token.length > 1) {
+      setUserLogged(storedUser);
       navigate("/");
     }
-  }, [navigate]);
+  }, [setUserLogged, navigate]);
+
+  // Sauvegarder l'utilisateur connecté dans le localStorage à chaque changement de userLogged
+  useEffect(() => {
+    if (userLogged.token && userLogged.token.length > 1) {
+      localStorage.setItem("userLogged", JSON.stringify(userLogged));
+    }
+  }, [userLogged]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,14 +35,15 @@ const Login = ({ setUserLogged }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        const token = data.token;
-        setUserLogged({
+        const loggedUser = {
           userId: data.userId,
+          name: data.name,
           token: data.token,
           isLogged: true,
           role: data.role,
-        });
-        localStorage.setItem("token", token);
+        };
+        setUserLogged(loggedUser);
+        localStorage.setItem("userLogged", JSON.stringify(loggedUser)); // Sauvegarder dans localStorage
         navigate("/");
       } else {
         if (response.status === 401) {
@@ -46,7 +56,8 @@ const Login = ({ setUserLogged }) => {
         }
       }
     } catch (error) {
-      console.error(error.response.data.message);
+      console.error("Erreur lors de la connexion :", error);
+      setError("Erreur lors de la connexion.");
     }
   };
   return (

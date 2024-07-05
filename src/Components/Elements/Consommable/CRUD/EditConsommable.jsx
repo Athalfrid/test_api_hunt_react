@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const EditConsommable = ({ userLogged }) => {
+const EditConsommable = ({ requiredRole }) => {
   const { id } = useParams();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -9,6 +9,16 @@ const EditConsommable = ({ userLogged }) => {
   const [effects, setEffects] = useState("");
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_BASE_URL;
+  const userLogged = localStorage.getItem('userLogged') ?  JSON.parse(localStorage.getItem('userLogged')) : null;
+
+  useEffect(() => {
+    if (!userLogged.isLogged) {
+      navigate("/403");
+    }
+    if (requiredRole && userLogged.role !== requiredRole) {
+      navigate("/402");
+    }
+  });
 
   useEffect(() => {
     if (!userLogged.token.length === 0 || userLogged.role !== "admin") {
@@ -52,13 +62,13 @@ const EditConsommable = ({ userLogged }) => {
           body: JSON.stringify({ name, description, type, effects }),
         }
       );
-      navigate("/admin/consommable/list");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
+      
       const data = await response.json();
       console.log("Consommable updated:", data);
+      navigate("/admin/consommable/list");
     } catch (error) {
       console.error("Error updating consommable:", error);
     }

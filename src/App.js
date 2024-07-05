@@ -14,34 +14,87 @@ import Register from "./Components/Register/Register";
 import Banner from "./Components/Banner/Banner";
 
 import EditConsommable from "./Components/Elements/Consommable/CRUD/EditConsommable";
-import DeleteConsommable from "./Components/Elements/Consommable/CRUD/DeleteConsommable";
 import CreateConsommable from "./Components/Elements/Consommable/CRUD/CreateConsommable";
 import ConsommableDetails from "./Components/Elements/Consommable/CRUD/ConsommableDetails";
 
 import TraitDetails from "./Components/Elements/Trait/CRUD/TraitDetails";
 import CreateTrait from "./Components/Elements/Trait/CRUD/CreateTrait";
 import EditTrait from "./Components/Elements/Trait/CRUD/EditTrait";
-import DeleteTrait from "./Components/Elements/Trait/CRUD/DeleteTrait";
 
 import CreateWeapon from "./Components/Elements/Weapon/CRUD/CreateWeapon";
 import NotLogged from "./Components/Error/NotLogged";
 import NotAdmin from "./Components/Error/NotAdmin";
 import AdminNavbar from "./Components/NavBar/AdminNavbar";
+import WeaponDetails from "./Components/Elements/Weapon/CRUD/WeaponDetails";
+import EditWeapon from "./Components/Elements/Weapon/CRUD/EditWeapon";
 
 function App() {
   const [userLogged, setUserLogged] = useState({
     userId: null,
+    name: "",
     token: "",
     isLogged: false,
     role: "",
   });
 
+  const storedUser = localStorage.getItem("userLogged")
+    ? JSON.parse(localStorage.getItem("userLogged"))
+    : null;
+
+  const protectedRoutes = [
+    {
+      path: "/admin/consommable/list",
+      element: (
+        <ConsommableDetails userLogged={userLogged} requiredRole="admin" />
+      ),
+    },
+    {
+      path: "/admin/consommable/create",
+      element: (
+        <CreateConsommable userLogged={userLogged} requiredRole="admin" />
+      ),
+    },
+    {
+      path: "/admin/consommable/edit/:id",
+      element: <EditConsommable userLogged={userLogged} requiredRole="admin" />,
+    },
+    {
+      path: "/admin/traits/:id",
+      element: <TraitDetails userLogged={userLogged} requiredRole="admin" />,
+    },
+    {
+      path: "/admin/traits/create",
+      element: <CreateTrait userLogged={userLogged} requiredRole="admin" />,
+    },
+    {
+      path: "/admin/traits/edit/:id",
+      element: <EditTrait userLogged={userLogged} requiredRole="admin" />,
+    },
+    {
+      path: "/admin/armes/create",
+      element: <CreateWeapon userLogged={userLogged} requiredRole="admin" />,
+    },
+    {
+      path: "/admin/armes/list",
+      element: <WeaponDetails userLogged={userLogged} requiredRole="admin" />,
+    },
+
+    {
+      path: "/admin/armes/edit/:id",
+      element: <EditWeapon userLogged={userLogged} requiredRole="admin" />,
+    },
+  ];
+
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUserLogged({ userId: null, token: "", isLogged: false, role: "" });
-    if(userLogged.isLogged) {
-      window.location.href = '/';
-    }
+    localStorage.removeItem("userLogged");
+    setUserLogged({
+      userId: null,
+      name: "",
+      token: "",
+      isLogged: false,
+      role: "",
+    });
+    window.location.href = "/";
   };
 
   return (
@@ -49,7 +102,7 @@ function App() {
       <div className="App">
         <Banner userLogged={userLogged} handleLogout={handleLogout} />
         <NavBar userLogged={userLogged} />
-        {userLogged.role === "admin" && <AdminNavbar />}
+        {storedUser && storedUser.role === "admin" && <AdminNavbar />}
         <Routes>
           {/* Routes publiques */}
           <Route exact path="/" element={<Home userLogged={userLogged} />} />
@@ -62,65 +115,16 @@ function App() {
           <Route
             exact
             path="/login"
-            element={<Login setUserLogged={setUserLogged} />}
+            element={
+              <Login setUserLogged={setUserLogged} userLogged={userLogged} />
+            }
           />
           <Route exact path="/register" element={<Register />} />
 
-          <Route
-            path="/admin/consommable/:id"
-            element={
-              <ConsommableDetails
-                userLogged={userLogged}
-                requiredRole="admin"
-              />
-            }
-          />
-          <Route
-            path="/admin/consommable/create"
-            element={
-              <CreateConsommable userLogged={userLogged} requiredRole="admin" />
-            }
-          />
-          <Route
-            path="/admin/consommable/edit/:id"
-            element={
-              <EditConsommable userLogged={userLogged} requiredRole="admin" />
-            }
-          />
-          <Route
-            path="/admin/consommable/delete/:id"
-            element={
-              <DeleteConsommable userLogged={userLogged} requiredRole="admin" />
-            }
-          />
-          <Route
-            path="/admin/traits/:id"
-            element={
-              <TraitDetails userLogged={userLogged} requiredRole="admin" />
-            }
-          />
-          <Route
-            path="/admin/traits/create"
-            element={
-              <CreateTrait userLogged={userLogged} requiredRole="admin" />
-            }
-          />
-          <Route
-            path="/admin/traits/edit/:id"
-            element={<EditTrait userLogged={userLogged} requiredRole="admin" />}
-          />
-          <Route
-            path="/admin/traits/delete/:id"
-            element={
-              <DeleteTrait userLogged={userLogged} requiredRole="admin" />
-            }
-          />
-          <Route
-            path="/admin/armes/create"
-            element={
-              <CreateWeapon userLogged={userLogged} requiredRole="admin" />
-            }
-          />
+          {protectedRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))}
+
           {/* Route 402 - Not Admin */}
           <Route path="/402" element={<NotAdmin />} />
           {/* Route 403 - Not Logged */}
