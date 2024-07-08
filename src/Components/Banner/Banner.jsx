@@ -46,12 +46,12 @@ const Banner = ({ handleLogout }) => {
               <button className="btn btn-danger" onClick={handleLogout}>
                 Logout
               </button>
-              <p>
-                Welcome 
-              <NavLink className="btn btn-info" to="/profile">
-                {name}
+              <NavLink to="/profile">
+                <p className="btn btn-dark text-white font-weight-bold">
+                  Welcome{" "} 
+                  {name}
+                </p>
               </NavLink>
-              </p>
             </>
           )}
         </div>

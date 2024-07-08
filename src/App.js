@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavBar from "./Components/NavBar/NavBar";
 import Consommable from "./Components/Elements/Consommable/Consommable";
@@ -27,6 +27,8 @@ import NotAdmin from "./Components/Error/NotAdmin";
 import AdminNavbar from "./Components/NavBar/AdminNavbar";
 import WeaponDetails from "./Components/Elements/Weapon/CRUD/WeaponDetails";
 import EditWeapon from "./Components/Elements/Weapon/CRUD/EditWeapon";
+import EnemieDetails from "./Components/Elements/Enemie/CRUD/EnemieDetails";
+import CreateEnemie from "./Components/Elements/Enemie/CRUD/CreateEnemie";
 
 function App() {
   const [userLogged, setUserLogged] = useState({
@@ -36,23 +38,24 @@ function App() {
     isLogged: false,
     role: "",
   });
+  const [storedUser, setStoredUser] = useState();
 
-  const storedUser = localStorage.getItem("userLogged")
-    ? JSON.parse(localStorage.getItem("userLogged"))
-    : null;
+  useEffect(()=>{
+    setStoredUser(localStorage.getItem("userLogged")
+      ? JSON.parse(localStorage.getItem("userLogged"))
+      : null);
+
+  },[])
+
 
   const protectedRoutes = [
     {
       path: "/admin/consommable/list",
-      element: (
-        <ConsommableDetails userLogged={userLogged} requiredRole="admin" />
-      ),
+      element: <ConsommableDetails userLogged={userLogged} requiredRole="admin" />
     },
     {
       path: "/admin/consommable/create",
-      element: (
-        <CreateConsommable userLogged={userLogged} requiredRole="admin" />
-      ),
+      element: <CreateConsommable userLogged={userLogged} requiredRole="admin" />
     },
     {
       path: "/admin/consommable/edit/:id",
@@ -83,17 +86,19 @@ function App() {
       path: "/admin/armes/edit/:id",
       element: <EditWeapon userLogged={userLogged} requiredRole="admin" />,
     },
+    {
+      path: "/admin/ennemie/list",
+      element:<EnemieDetails userLogged={userLogged} requiredRole="admin" />,
+    },
+    {
+      path:"/admin/ennemie/create",
+      element: <CreateEnemie userLogged={userLogged} requiredRole="admin" />,
+    }
   ];
 
   const handleLogout = () => {
     localStorage.removeItem("userLogged");
-    setUserLogged({
-      userId: null,
-      name: "",
-      token: "",
-      isLogged: false,
-      role: "",
-    });
+    setStoredUser(null);
     window.location.href = "/";
   };
 
@@ -116,7 +121,7 @@ function App() {
             exact
             path="/login"
             element={
-              <Login setUserLogged={setUserLogged} userLogged={userLogged} />
+              <Login setStoredUser={setStoredUser} storedUser={storedUser} />
             }
           />
           <Route exact path="/register" element={<Register />} />

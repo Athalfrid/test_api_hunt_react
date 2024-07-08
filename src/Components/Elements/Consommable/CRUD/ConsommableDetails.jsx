@@ -7,16 +7,17 @@ const ConsommableDetails = ({ requiredRole }) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_BASE_URL;
-  const userLogged = localStorage.getItem('userLogged') ?  JSON.parse(localStorage.getItem('userLogged')) : null;
+  const userLogged = localStorage.getItem("userLogged")
+    ? JSON.parse(localStorage.getItem("userLogged"))
+    : null;
 
-  useEffect(() => {
-    if (!userLogged.isLogged) {
-      navigate("/403");
-    }
-    if (requiredRole && userLogged.role !== requiredRole) {
-      navigate("/402");
-    }
-  });
+    useEffect(() => {
+      if (!userLogged) {
+        navigate("/403");
+      } else if (requiredRole && userLogged.role !== requiredRole) {
+        navigate("/402");
+      }
+    });
 
   useEffect(() => {
     fetchConsommable();
@@ -82,6 +83,11 @@ const ConsommableDetails = ({ requiredRole }) => {
 
   return (
     <div className="container">
+      <div className="d-flex justify-content-center mt-2 mb-4">
+        <Link className="btn btn-info" to="/admin/consommable/create">
+          Ajouter Consommable
+        </Link>
+      </div>
       <table className="table table-striped table-bordered">
         <tbody>
           {consommables.map((consommable) => (
@@ -111,13 +117,6 @@ const ConsommableDetails = ({ requiredRole }) => {
           ))}
         </tbody>
       </table>
-      <div className="d-flex justify-content-center mt-2">
-        <button className="btn btn-info">
-          <Link className="nav-link" to="/admin/consommable/create">
-            Ajouter Consommable
-          </Link>
-        </button>
-      </div>
     </div>
   );
 };

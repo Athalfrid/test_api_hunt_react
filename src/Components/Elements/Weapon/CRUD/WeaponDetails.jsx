@@ -12,10 +12,9 @@ const WeaponDetails = ({requiredRole}) => {
   const userLogged = localStorage.getItem('userLogged') ?  JSON.parse(localStorage.getItem('userLogged')) : null;
 
   useEffect(() => {
-    if (!userLogged.isLogged) {
+    if (!userLogged) {
       navigate("/403");
-    }
-    if (requiredRole && userLogged.role !== requiredRole) {
+    } else if (requiredRole && userLogged.role !== requiredRole) {
       navigate("/402");
     }
   });
@@ -84,22 +83,20 @@ const WeaponDetails = ({requiredRole}) => {
 
   return (
     <div className="container">
+      <div className="d-flex justify-content-center mt-2">
+          <Link className="btn btn-info" to="/admin/armes/create">
+            Ajouter Armes
+          </Link>
+      </div>
       <div className="d-flex justify-content-center align-items-center">
         <input
           className="mx-2"
           name="search"
           type="text"
-          placeholder="Rechercher un trait"
+          placeholder="Rechercher une arme"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-      </div>
-      <div className="d-flex justify-content-center mt-2">
-        <button className="btn btn-info">
-          <Link className="nav-link" to="/admin/armes/create">
-            Ajouter Armes
-          </Link>
-        </button>
       </div>
       <table className="table table-striped table-bordered">
         <tbody>

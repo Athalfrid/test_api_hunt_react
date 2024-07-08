@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setUserLogged,userLogged }) => {
+const Login = ({ setStoredUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -9,19 +9,13 @@ const Login = ({ setUserLogged,userLogged }) => {
 
   // Charger l'utilisateur connecté depuis le localStorage
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("userLogged"));
-    if (storedUser && storedUser.token && storedUser.token.length > 1) {
-      setUserLogged(storedUser);
+    const user = localStorage.getItem("userLogged") ? JSON.parse(localStorage.getItem("userLogged")) : null;
+    if (user) {
       navigate("/");
     }
-  }, [setUserLogged, navigate]);
+  }, [navigate]);
 
-  // Sauvegarder l'utilisateur connecté dans le localStorage à chaque changement de userLogged
-  useEffect(() => {
-    if (userLogged.token && userLogged.token.length > 1) {
-      localStorage.setItem("userLogged", JSON.stringify(userLogged));
-    }
-  }, [userLogged]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +36,7 @@ const Login = ({ setUserLogged,userLogged }) => {
           isLogged: true,
           role: data.role,
         };
-        setUserLogged(loggedUser);
+        setStoredUser(loggedUser);
         localStorage.setItem("userLogged", JSON.stringify(loggedUser)); // Sauvegarder dans localStorage
         navigate("/");
       } else {

@@ -7,10 +7,9 @@ const EditWeapon = ({requiredRole}) => {
   const userLogged = localStorage.getItem('userLogged') ?  JSON.parse(localStorage.getItem('userLogged')) : null;
 
   useEffect(() => {
-    if (!userLogged.isLogged) {
+    if (!userLogged) {
       navigate("/403");
-    }
-    if (requiredRole && userLogged.role !== requiredRole) {
+    } else if (requiredRole && userLogged.role !== requiredRole) {
       navigate("/402");
     }
   });

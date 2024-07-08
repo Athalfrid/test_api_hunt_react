@@ -42,28 +42,15 @@ function Enemie() {
     );
   }
 
-  if (enemies.length === 0) {
-    return (
-      <div className="container">
-        <div className="d-flex row">
-          <h2 className="text-center my-4">Aucunes données enregistrées !</h2>
-          <p className="btn btn-primary text-center">
-            Cliquer pour ajouter un ennemi
-          </p>
+  return (
+    <div className="row">
+      {enemies.map((enemie) => (
+        <div className="col-12 col-md-6 col-lg-4 mb-4" key={enemie._id}>
+          <EnemieCard enemie={enemie} />
         </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className="row">
-        {enemies.map((enemie) => (
-          <div className="col-12 col-md-6 col-lg-4 mb-4" key={enemie._id}>
-            <EnemieCard enemie={enemie} />
-          </div>
-        ))}
-      </div>
-    );
-  }
+      ))}
+    </div>
+  );
 }
 
 export default Enemie;

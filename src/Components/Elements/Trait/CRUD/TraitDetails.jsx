@@ -8,16 +8,17 @@ const TraitDetails = ({ requiredRole }) => {
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_BASE_URL;
   const [search, setSearch] = useState("");
-  const userLogged = localStorage.getItem('userLogged') ?  JSON.parse(localStorage.getItem('userLogged')) : null;
+  const userLogged = localStorage.getItem("userLogged")
+    ? JSON.parse(localStorage.getItem("userLogged"))
+    : null;
 
-  useEffect(() => {
-    if (!userLogged.isLogged) {
-      navigate("/403");
-    }
-    if (requiredRole && userLogged.role !== requiredRole) {
-      navigate("/402");
-    }
-  });
+    useEffect(() => {
+      if (!userLogged) {
+        navigate("/403");
+      } else if (requiredRole && userLogged.role !== requiredRole) {
+        navigate("/402");
+      }
+    });
 
   const fetchConsommable = async () => {
     try {
@@ -84,11 +85,9 @@ const TraitDetails = ({ requiredRole }) => {
   return (
     <div className="container">
       <div className="d-flex justify-content-center mt-2 mb-2">
-        <button className="btn btn-info mt-2">
-          <Link className="nav-link" to="/admin/consommable/create">
-            Ajouter Trait
-          </Link>
-        </button>
+        <Link className="btn btn-info mt-2" to="/admin/consommable/create">
+          Ajouter Trait
+        </Link>
       </div>
       <div className="d-flex justify-content-center align-items-center">
         <input
@@ -110,7 +109,11 @@ const TraitDetails = ({ requiredRole }) => {
               .map((trait) => (
                 <tr key={trait._id}>
                   <td>{trait.name.toUpperCase()}</td>
-                  <td>{trait.lvlUnlocked ? 'Déverrouillé rang : '+trait.lvlUnlocked : ''}</td>
+                  <td>
+                    {trait.lvlUnlocked
+                      ? "Déverrouillé rang : " + trait.lvlUnlocked
+                      : ""}
+                  </td>
                   <td>
                     {trait.category.charAt(0).toUpperCase() +
                       trait.category.slice(1)}
